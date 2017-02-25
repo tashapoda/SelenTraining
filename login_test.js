@@ -5,7 +5,7 @@ var webdriver = require('selenium-webdriver'),
     until = webdriver.until,
     test = require('selenium-webdriver/testing');
 
-test.describe('Litecart dashborad login', function() {
+test.describe('Litecart dashboard login', function() {
     var driver;
     var login ='admin';
     var password ='admin';
