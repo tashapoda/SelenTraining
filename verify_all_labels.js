@@ -20,25 +20,29 @@ test.describe('Task 8', function() {
             .build();
     });
 
-    test.it('should check labels in all product', function() {
+    test.it('should check each product has one sticker', function() {
         driver.get('http://litecart.stqa.ru/index.php/en/');
 
-        //find all products on the page
-        var all_product=driver.findElements(By.css('li.product')).then(function(all_product){
+        //find all lists with products
+        var lists = driver.findElements(By.xpath(".//div/ul[@class='listing-wrapper products']")).then(function(){
+            for (i=1; i<lists.length; i++) {
+                //find all products inside each list
+                var all_product = driver.findElements(By.xpath('.//div/ul/li[@class="product column shadow hover-light"]')).then(function () {
 
-            for(i=1; i<all_product.length+1; i++){
-                var product=driver.findElement(By.css('li.product:nth-child('+i+')'));
-                product.findElement(By.css('.sticker')).isDisplayed();
+                    for (j = 1; j < all_product.length ; j++) {
+                        //verify that each product has only one sticker
+                        var product = driver.findElement(By.css('li.product:nth-child(' + j + ')'));
+                        product.findElements(By.css('.sticker')).length===1;
+
+                    }
 
 
+                });
             }
+            })
+
         });
 
-
-
-
-
-    });
 
     test.after(function() {
         driver.quit();
