@@ -29,7 +29,7 @@ test.describe('Litecart left sidebar navigation', function() {
         driver.wait(until.titleIs('My Store'), 2000);
 
 
-        //find all main left menu option
+        //find all main left menu options
         var options =driver.findElements(By.css('li#app-')).then(function(options){
 
             for (var i = 1; i < options.length + 1; i++) {
@@ -37,20 +37,21 @@ test.describe('Litecart left sidebar navigation', function() {
                 option.click();
                 driver.findElement(By.css('h1')).isDisplayed();
 
-              //check if sub-menu option is present  and click every sub_menu option
-               if (driver.findElement(By.css('li[id^="doc-"]')).isDisplayed().then(function (sub_options) {
-                        var sub_options = driver.findElements(By.css('li[id^="doc-"]')).then(function () {
+                //check if sub-menu option is present  and click every sub_menu option
+                if (driver.findElements(By.css('li[id^="doc-"]')).length > 0) {
+                    var sub_options = driver.findElements(By.css('li[id^="doc-"]')).then(function () {
                             for (j = 1; j < sub_options.length + 1; j++) {
                                 var sub_menu_link = driver.findElement(By.css('li[id^="doc-"]:nth-child(' + j + ')'));
                                 sub_menu_link.click();
                                 driver.findElement(By.css('h1')).isDisplayed();
                             };
 
-                        });
-                    }) );
 
-            };
-        });
+                    });
+                };
+
+            }});
+
 
         });
 
