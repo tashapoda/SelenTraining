@@ -45,14 +45,14 @@ test.describe('Task9', function() {
                   return  countryArr.push(text);
                })
             }
-            //sort the list actual alphabetically
+            //sort the actual list alphabetically
             var expectedCountryArr=countryArr.sort();
-            //making assertion that sorting list and initial one are equal
+            //verify that the sorted list and initial one are equal
             assert(countryArr, expectedCountryArr);
         });
 
          //part b
-         //check that countries with zone are present on the page
+         //find countries with zone on the page
 
          driver.findElements(By.xpath("//tr[contains(@class,'row')][./td[6][.!='0']]/td[5]/a")).then(function(zones){
          for (j= 1; j<zones.length+1; j++){
