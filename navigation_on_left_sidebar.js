@@ -1,3 +1,4 @@
+/*
 
 var webdriver = require('selenium-webdriver'),
     chrome = require('selenium-webdriver/chrome'),
@@ -60,4 +61,4 @@ test.describe('Litecart left sidebar navigation', function() {
     test.after(function() {
         driver.quit();
     });
-});
+});*/

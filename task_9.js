@@ -29,12 +29,13 @@ test.describe('Task9', function() {
 
     });
 
-    /*test.it('should all a) countries be sorted alphabetically with zone', function() {
+     test.it('should all countries and zones within be sorted alphabetically )', function() {
 
-        driver.get('http://localhost/litecart/admin/?app=countries&doc=countries');
+         driver.get('http://localhost/litecart/admin/?app=countries&doc=countries');
 
+        //part a
         //find the list of countries
-       var countryArr=[];
+        var countryArr=[];
         var countries =driver.findElements(By.xpath(".//tbody/tr[@class='row']/td[5]/a")).then(function(countries){
             //for each country get the its name
             for (var i=1; i< countries.length; i++){
@@ -46,44 +47,88 @@ test.describe('Task9', function() {
             }
             //sort the list actual alphabetically
             var expectedCountryArr=countryArr.sort();
-
             //making assertion that sorting list and initial one are equal
             assert(countryArr, expectedCountryArr);
-
         });
 
+         //part b
+         //check that countries with zone are present on the page
 
-        });
-*/
-    test.it('should all b) check county zone sorting', function() {
-        driver.get('http://localhost/litecart/admin/?app=countries&doc=countries');
+         driver.findElements(By.xpath("//tr[contains(@class,'row')][./td[6][.!='0']]/td[5]/a")).then(function(zones){
+         for (j= 1; j<zones.length+1; j++){
+             var zone=driver.findElement(By.xpath("//tr[contains(@class,'row')][./td[6][.!='0']]["+j+"]/td[5]/a"));
+             zone.click();
 
-       var zoneArr=[];
+             driver.wait(until.elementLocated(By.css('h1'))).then(function(el){
+                  el.getText().then(function(text){
+                      assert.equal(text, "Edit Country");
 
-        var countries =driver.findElements(By.xpath(".//tbody/tr[@class='row']/td[5]/a")).then(function(countries) {
-            for (var i = 1; i < countries.length; i++) {
-                var zoneNum = driver.findElement(By.xpath(".//tbody/tr[@class='row'][" + i + "]/td[6]"));
-                if (zoneNum.getAttribute('outerText').then(function (num) {
-                        parseInt(num) !== 0;
-                        //return console.log(num);
-                    })) {
+                  });
+              });
 
-                    driver.findElement(By.xpath(".//tbody/tr[@class='row'][" + i + "]/td[5]/a")).click();
-                    var zones = driver.findElements(By.xpath(".//table[@id='table-zones']/tbody/tr/td[3]")).then(function () {
-                        for (j = 1; j < zones.length - 1; j++) {
-                            var zone = driver.findElement(By.xpath(".//table[@id='table-zones']/tbody/tr[" + j + "]/td[3]"));
-                            zone.getAttribute('innerText').then(function (text) {
-                                console.log(text);
-                            });
-
-                        };
+             // find zone's rows on the Edit Country page
+             var countryZones=[];
+             driver.findElements(By.xpath("//table[@id='table-zones']/tbody/tr/td[3]")).then(function(country_zones){
+               for (k=2; k< country_zones.length+1; k++){
+                 var country_zone_name=driver.findElement(By.xpath("//table[@id='table-zones']/tbody/tr["+k+"]/td[3]"));
+                 country_zone_name.then(function(el){
+                    el.getText().then(function(text){
+                        //console.log(text);
+                        countryZones.push(text);
                     });
-                };
-            };
+                 });
+                      assert.equal(countryZones, countryZones.sort());
+               };
+                 driver.navigate().back();
+             });
+
+          };
+         });
+
+
+
         });
-            });
+
+  test.it('should check that zones are alphabetically sorted',function(){
+      var geo_zone='http://localhost/litecart/admin/?app=geo_zones&doc=geo_zones';
+      driver.get(geo_zone);
+
+      driver.findElements(By.xpath("//table/tbody/tr[@class='row']/td[3]/a")).then(function(countries){
+          for (var i=1; i<=countries.length;i++){
+              driver.findElement(By.xpath("//table/tbody/tr[@class='row']["+i+"]/td[3]/a")).then(function(country){
+                  country.click();
+                  var title=driver.wait(until.elementLocated(By.css('h1')));
+                  title.then(function(el){
+                      el.getAttribute('innerText').then(function(text){
+                          assert.equal(text," Edit Geo Zone");
+                      });
+                  });
+
+                  var zonesArr=[];
+                  driver.findElements(By.xpath("//table/tbody/tr/td[3]/select/option[@selected='selected']")).then(function(zones){
+                      for(var j=2;j<zones.length+2;j++){
+                          driver.findElement(By.xpath("//table/tbody/tr["+j+"]/td[3]/select/option[@selected='selected']"))
+                              .then(function(el){
+                                  el.getText().then(function(text){
+                                     // console.log(text);
+                                      zonesArr.push(text);
+                                      assert.equal(zonesArr,zonesArr.sort());
+                                  });
+                              });
+
+                      };
+                      driver.navigate().to(geo_zone);
+
+                  });
+              });
 
 
+          }
+      });
+
+
+
+  });
 
 
 
@@ -92,3 +137,4 @@ test.describe('Task9', function() {
         driver.quit();
     });
 });
+
