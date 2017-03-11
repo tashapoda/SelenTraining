@@ -1,4 +1,4 @@
-/*
+
 
 var webdriver = require('selenium-webdriver'),
     chrome = require('selenium-webdriver/chrome'),
@@ -48,4 +48,4 @@ test.describe('Task 8', function() {
     test.after(function() {
         driver.quit();
     });
-});*/
+});

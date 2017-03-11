@@ -19,13 +19,13 @@ test.describe('Task 10', function() {
 
 
         driver = new webdriver.Builder()
-            //.forBrowser('chrome')
-            //.setChromeOptions(options)
+            .forBrowser('chrome')
+            .setChromeOptions(options)
 
             //.forBrowser('safari')
 
-            .withCapabilities({'marionette': true})
-            .forBrowser('firefox')
+            //.withCapabilities({'marionette': true})
+            //.forBrowser('firefox')
             .build();
     });
 
