@@ -1,12 +1,15 @@
 
+
+
  var webdriver = require('selenium-webdriver'),
     chrome = require('selenium-webdriver/chrome'),
     firefox = require('geckodriver'),
     By = webdriver.By,
     until = webdriver.until,
     test = require('selenium-webdriver/testing');
-require('selenium-webdriver/testing/assert');
-const assert = require('assert');
+ //require('selenium-webdriver/testing/assert');
+ const assert = require('assert');
+
 
 
 test.describe('Task 10', function() {
@@ -24,7 +27,9 @@ test.describe('Task 10', function() {
 
             //.forBrowser('safari')
 
-            //.withCapabilities({'marionette': true})
+            //.withCapabilities({
+            //    "browserName": "firefox",
+            //    'marionette': true})
             //.forBrowser('firefox')
             .build();
     });
@@ -97,18 +102,27 @@ test.describe('Task 10', function() {
         assert(product_hm_regular_price_font_size > product_hm_sale_price_font_size);
 
        //find color of regular price
-        var product_hm_regl_price_color = product_hm_regl_price.then(function(el){
+            product_hm_regl_price.then(function(el){
              el.getCssValue("color").then(function(color){
                  console.log(color);
-                 if (driver == 'firefox' || driver =='safari'){
+
+                 driver.getCapabilities().then(function(c){
+                     var current_browser=c.get("browserName");
+                     console.log(current_browser);
+                 });
+
+                 if (driver.get("browserName") == "firefox" || driver.get("browserName") =='safari'){
                      assert.equal(color, "rgb(119, 119, 119)")
                  }
                  else {
                      assert.equal(color, "rgba(119, 119, 119, 1)")
                  }
 
+
              });
         });
+
+
        //find decoration for regular price
         var product_hm_regl_price_decor = product_hm_regl_price.getCssValue("text-decoration");
         //checking that regular price is strikeout on home page
@@ -198,3 +212,4 @@ test.describe('Task 10', function() {
         driver.quit();
     });
 });
+
