@@ -142,7 +142,6 @@ test.describe('Task 10', function() {
       //get the product title on the Product page and verify that it is the same as on Home page
        var pr_title=driver.wait(until.elementLocated(By.css('h1.title')));
         pr_title.then(function(el){
-        //driver.findElement(By.css('h1.title')).then(function(el){
            el.getText().then(function(text){
                assert.equal(text,product_hm_title);
            });
