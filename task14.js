@@ -31,10 +31,14 @@ test.describe('Task 12', function() {
             .forBrowser('chrome')
             .setChromeOptions(options)
 
+
+            //.withCapabilities({
+            //        "browserName": "firefox",
+            //        'marionette': true})
+            //.forBrowser("firefox")
             .build();
 
         driver.get('http://localhost/litecart/admin/login.php');
-
         driver.findElement(By.name('username')).sendKeys(login);
         driver.findElement(By.name('password')).sendKeys(password);
         driver.findElement(By.name('login')).click();
@@ -43,12 +47,16 @@ test.describe('Task 12', function() {
     });
 
     test.it('should add new product to Catalog', function() {
+        //driver.findElement(By.linkText('Catalog')).then(function(el){
+        //    el.click();
+        //});
 
         driver.navigate().to("http://localhost/litecart/admin/?app=catalog&doc=catalog");
         driver.wait(until.titleIs('Catalog | My Store'), 3000);
 
         driver.findElement(By.css('a[href$="product"]')).click();
-        driver.wait(until.titleIs('Add New Product | My Store'), 2000);
+        //driver.findElement(By.css('a.button:nth-child(2)')).click();
+        driver.wait(until.titleIs('Add New Product | My Store'), 5000);
 
         //change status to Enable
         driver.findElement(By.css('label input[value="1"]')).click();
@@ -66,28 +74,34 @@ test.describe('Task 12', function() {
         });
 
 
+
+
         //add image;
-        var fileToUpload= 'img/test.png'
+        var fileToUpload= '/Users/natalie/Documents/Repo/SeleniumTraining/SelenTraining/img/test.png'
+        //var fileToUpload= '/img/test.png'
             , absolutePath = path.resolve(__dirname, fileToUpload);
 
         driver.findElement(By.name('new_images[]')).then(function(el){
             el.sendKeys(absolutePath);
+            driver.sleep(3000);
         });
+
+
+
+
+
 
         //enter date for Date Valid from
         driver.findElement(By.name('date_valid_from')).then(function(el){
             el.click();
-            el.sendKeys( '2016'+ Key.LEFT + "13" + Key.LEFT + Key.LEFT+ '10');
-
+            el.sendKeys(Key.HOME+'03.13.2017');
         });
 
         //enter date for Date valid to
         driver.findElement(By.name('date_valid_to')).then(function(el){
             el.click();
-            el.sendKeys( '2018'+ Key.LEFT + "13" + Key.LEFT + Key.LEFT+ '10');
+            el.sendKeys(Key.HOME+'04.13.2018');
         });
-
-        driver.sleep(5000);
 
         //switch to Information tab
 
@@ -113,31 +127,38 @@ test.describe('Task 12', function() {
         driver.findElement(By.linkText('Prices')).click();
 
         var price=driver.findElement(By.name('purchase_price'));
-        var pur_price_num = '12';
+        var price_num = 2.55;
 
         price.click();
-        price.sendKeys(Key.LEFT + pur_price_num);
+        price.sendKeys(price_num);
 
         var currency=driver.findElement(By.name('purchase_price_currency_code'));
         currency.click();
         driver.findElement(By.css('option[value="USD"]')).click();
 
-        var price_num="10";
         driver.findElement(By.name('prices[USD]')).sendKeys(price_num);
 
-        driver.findElement(By.css('button[name="save"]')).then(function(el){
+        driver.sleep(3000);
+
+
+        driver.findElement(By.xpath('//form/p/span/button[1]')).then(function(el){
             el.click();
-            driver.wait(until.stalenessOf(el));
+            driver.wait(until.elementIsNotVisible(el));
         });
 
-        driver.findElement(By.css('input[type="search"]')).then(function(el){
-            el.sendKeys(product_name + Key.ENTER);
-        });
-        driver.findElement(By.xpath('//table/tbody/tr[@class="row"]/td[3]/a')).then(function(el){
-            el.getText().then(function(text){
-               assert.equal(text,product_name);
-            });
-        });
+
+        //driver.findElement(By.css('form[method="post"]')).submit();
+
+
+
+        driver.sleep(6000);
+
+        driver.findElement(By.css('a[href$="catalog&category_id=1"]')).click();
+
+
+
+
+
 
     });
 
