@@ -50,33 +50,46 @@ test.describe('Task 14', function() {
             newTab: ''
         };
 
+
         driver.getWindowHandle().then(function(handle){
             tabs.oldTab = handle;
 
         });
 
-        driver.findElement(By.css('a i.fa-external-link')).click();
-        driver.sleep(4000);
+        driver.findElements(By.css('a i.fa-external-link')).then(function(items){
+
+        for (var i=1; i<items.length; i++) {
+
+            items[i].click();
+
+
+            driver.wait(function () {
+                return driver.getAllWindowHandles().then(function (handles) {
+                    return handles != tabs.oldTab;
+                });
+            }, 3000);
 
 
 
-        driver.getAllWindowHandles().then(function(handles){
-            assert.equal(handles[0], tabs.oldTab);
 
-            tabs.newTab=handles[1];
-            return driver.switchTo().window(tabs.newTab);
-            driver.close();
 
-            driver.switchTo().window(tabs.oldTab);
+
+            driver.getAllWindowHandles().then(function (handles) {
+                assert.equal(handles[0], tabs.oldTab);
+
+                tabs.newTab = handles[1];
+
+                driver.switchTo().window(tabs.newTab);
+
+                driver.close();
+
+
+                driver.switchTo().window(tabs.oldTab);
+
+            });
+        }
 
         });
-
-
-
-
-
-
-
 
     });
 
